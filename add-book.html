@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Sách Mới</title>
+    <!-- Nhúng CSS của Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .navbar-placeholder { background-color: #343a40; color: #fff; padding: 15px; text-align: center; margin-bottom: 30px;}
+    </style>
+</head>
+<body>
+    <nav class="navbar-placeholder">Navbar</nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <!-- Thẻ bọc ngoài dạng Card -->
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <h2 class="text-center mb-4 text-dark">Thêm Sách Mới</h2>
+                        <form id="addBookForm">
+                            <div class="mb-3">
+                                <label for="bookTitle" class="form-label fw-bold">Tên sách *</label>
+                                <input type="text" class="form-control" id="bookTitle" placeholder="Nhập tên sách...">
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookAuthor" class="form-label fw-bold">Tác giả *</label>
+                                <input type="text" class="form-control" id="bookAuthor" placeholder="Nhập tên tác giả...">
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookCover" class="form-label fw-bold">Link ảnh bìa</label>
+                                <input type="url" class="form-control" id="bookCover" placeholder="https://example.com/image.jpg">
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookCategory" class="form-label fw-bold">Thể loại</label>
+                                <select class="form-select" id="bookCategory">
+                                    <option value="IT">Công nghệ thông tin</option>
+                                    <option value="Science">Khoa học</option>
+                                    <option value="Literature">Văn học</option>
+                                    <option value="SelfHelp">Phát triển bản thân</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookStatus" class="form-label fw-bold">Trạng thái</label>
+                                <select class="form-select" id="bookStatus">
+                                    <option value="unread">Chưa đọc</option>
+                                    <option value="reading">Đang đọc</option>
+                                    <option value="read">Đã đọc</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookPages" class="form-label fw-bold">Tổng số trang *</label>
+                                <input type="number" class="form-control" id="bookPages" placeholder="Ví dụ: 300" min="1">
+                            </div>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a href="library.html" class="btn btn-danger px-4">Hủy bỏ</a>
+                                <button type="button" class="btn btn-success px-4" onclick="saveBook()">Lưu sách</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nhúng JS của Bootstrap (Dành cho hiệu ứng click dropdown nếu có) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function saveBook() {
+            const title = document.getElementById('bookTitle').value.trim();
+            const author = document.getElementById('bookAuthor').value.trim();
+            const pages = document.getElementById('bookPages').value.trim();
+
+            if (!title || !author || !pages) {
+                alert("Vui lòng điền đầy đủ các thông tin bắt buộc: Tên sách, Tác giả và Số trang!");
+                return;
+            }
+
+            alert("Đã lưu sách thành công!");
+            window.location.href = "library.html";
+        }
+    </script>
+</body>
+</html>
