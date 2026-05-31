@@ -10,7 +10,6 @@
     <style>
         body { background-color: #f4f7f6; padding-top: 70px; }
         
-        /* CSS tùy chỉnh cho giao diện Thẻ sách (Card) dựa trên class thumbnail của Bootstrap 3 */
         .book-card {
             background-color: #fff;
             border-radius: 8px;
@@ -41,7 +40,6 @@
         }
         .book-author { font-size: 13px; color: #777; margin-bottom: 15px; }
         
-        /* Tùy chỉnh Toolbar */
         .toolbar-section {
             background: #fff;
             padding: 15px;
@@ -70,7 +68,7 @@
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="library.html">Thư Viện Của Tôi</a></li>
-                    </ul>
+                </ul>
                 
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -118,7 +116,7 @@
             
             <div class="col-md-3 col-sm-6 book-item" data-title="Code Dạo Ký Sự" data-status="reading">
                 <div class="book-card">
-                    <img src="https://via.placeholder.com/300x400/337ab7/ffffff?text=Code+Dao+Ky+Su" alt="Bìa sách" class="book-cover">
+                    <img src="book1.jpg" alt="Code Dạo Ký Sự" class="book-cover">
                     <div class="book-info">
                         <h4 class="book-title" title="Code Dạo Ký Sự">Code Dạo Ký Sự</h4>
                         <p class="book-author">Phạm Huy Hoàng</p>
@@ -132,7 +130,7 @@
 
             <div class="col-md-3 col-sm-6 book-item" data-title="Clean Code" data-status="read">
                 <div class="book-card">
-                    <img src="https://via.placeholder.com/300x400/5cb85c/ffffff?text=Clean+Code" alt="Bìa sách" class="book-cover">
+                    <img src="book2.jpg" alt="Clean Code" class="book-cover">
                     <div class="book-info">
                         <h4 class="book-title" title="Clean Code">Clean Code</h4>
                         <p class="book-author">Robert C. Martin</p>
@@ -146,7 +144,7 @@
 
             <div class="col-md-3 col-sm-6 book-item" data-title="Lập Trình C++ Cơ Bản" data-status="reading">
                 <div class="book-card">
-                    <img src="https://via.placeholder.com/300x400/f0ad4e/ffffff?text=C%2B%2B+Basic" alt="Bìa sách" class="book-cover">
+                    <img src="book3.jpg" alt="Lập Trình C++ Cơ Bản" class="book-cover">
                     <div class="book-info">
                         <h4 class="book-title" title="Lập Trình C++ Cơ Bản">Lập Trình C++ Cơ Bản</h4>
                         <p class="book-author">Nhiều tác giả</p>
@@ -160,7 +158,7 @@
 
             <div class="col-md-3 col-sm-6 book-item" data-title="Java Core" data-status="read">
                 <div class="book-card">
-                    <img src="https://via.placeholder.com/300x400/d9534f/ffffff?text=Java+Core" alt="Bìa sách" class="book-cover">
+                    <img src="book4.jpg" alt="Java Core" class="book-cover">
                     <div class="book-info">
                         <h4 class="book-title" title="Java Core">Java Core</h4>
                         <p class="book-author">Cay S. Horstmann</p>
@@ -177,35 +175,28 @@
 
     <script>
         $(document).ready(function() {
-            
-            // 1. Chức năng Tìm kiếm theo tên sách
+            // Chức năng Tìm kiếm
             $('#searchInput').on('keyup', function() {
                 var searchText = $(this).val().toLowerCase();
-                
                 $('.book-item').each(function() {
-                    // Lấy tên sách từ thuộc tính data-title đã gài sẵn trong HTML
                     var title = $(this).attr('data-title').toLowerCase();
                     if(title.indexOf(searchText) !== -1) {
-                        $(this).show(); // Hiển thị nếu tên sách khớp chuỗi tìm kiếm
+                        $(this).show();
                     } else {
-                        $(this).hide(); // Ẩn đi nếu không khớp
+                        $(this).hide();
                     }
                 });
             });
 
-            // 2. Chức năng Lọc Tab (Tất cả, Đang đọc, Đã đọc)
+            // Chức năng Lọc Tab
             $('#filterTabs a').on('click', function(e) {
-                e.preventDefault(); // Ngăn hành vi nhảy trang của thẻ a
-                
-                // Đổi trạng thái active cho Tab
+                e.preventDefault();
                 $('#filterTabs li').removeClass('active');
                 $(this).parent().addClass('active');
 
                 var filterValue = $(this).attr('data-filter');
-
-                // Xử lý ẩn/hiện dựa trên data-status
                 if(filterValue === 'all') {
-                    $('.book-item').show(); // Bấm "Tất cả" thì hiện toàn bộ
+                    $('.book-item').show();
                 } else {
                     $('.book-item').each(function() {
                         if($(this).attr('data-status') === filterValue) {
@@ -215,23 +206,19 @@
                         }
                     });
                 }
-                
-                // Xóa nội dung thanh tìm kiếm khi chuyển tab để tránh xung đột logic
                 $('#searchInput').val('');
             });
 
-            // 3. Chức năng Xóa thẻ sách (Tạo hiệu ứng xóa trực tiếp trên giao diện)
+            // Chức năng Xóa
             $('.btn-delete').on('click', function(e) {
                 e.preventDefault();
                 var confirmDelete = confirm("Bạn có chắc chắn muốn xóa cuốn sách này khỏi thư viện?");
                 if(confirmDelete) {
-                    // Hiệu ứng mờ dần (fadeOut) rồi xóa hẳn (remove) khối col-md-3 bọc ngoài
                     $(this).closest('.book-item').fadeOut(300, function() {
                         $(this).remove();
                     });
                 }
             });
-
         });
     </script>
 </body>
