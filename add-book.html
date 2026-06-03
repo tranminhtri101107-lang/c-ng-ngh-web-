@@ -3,85 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thêm Sách Mới</title>
-    <!-- Nhúng CSS của Bootstrap 5 -->
+    <title>Thêm Sách - Modern Dark Library</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #f8f9fa; }
-        .navbar-placeholder { background-color: #343a40; color: #fff; padding: 15px; text-align: center; margin-bottom: 30px;}
+        :root {
+            --bg-dark: #0F172A;       /* Đen than */
+            --card-bg: #1E293B;       /* Xám đậm */
+            --text-light: #F8FAFC;    /* Trắng xám */
+            --accent-cyan: #06B6D4;   /* Xanh cyan */
+            --btn-blue: #3B82F6;      /* Xanh dương */
+            --input-bg: #0B1120;      /* Đen sâu cho ô nhập liệu */
+            --border-color: #334155;  /* Viền xám nhạt hơn */
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif; /* Phông chuẩn UI không lỗi dấu */
+            min-height: 100vh;
+        }
+
+        /* Phông chữ sang trọng cho tiêu đề */
+        h1, h2, h3, h4, h5, .navbar-brand {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .navbar-custom {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .navbar-brand {
+            color: var(--accent-cyan) !important;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Card Form */
+        .card-custom {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Form Inputs */
+        .form-label {
+            font-weight: 500;
+            color: #94A3B8; /* Xám nhạt để dễ đọc */
+            margin-bottom: 8px;
+        }
+        .form-control, .form-select {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            border-radius: 8px;
+            padding: 12px 16px;
+            transition: all 0.3s;
+        }
+        .form-control::placeholder {
+            color: #475569;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: var(--input-bg);
+            color: var(--text-light);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
+        }
+
+        /* Tùy chỉnh mũi tên của Select box cho nền tối */
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2394A3B8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        }
+
+        /* Nút bấm */
+        .btn-primary-custom {
+            background-color: var(--btn-blue);
+            color: #fff;
+            border: none;
+            font-weight: 600;
+            padding: 12px 28px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary-custom:hover {
+            background-color: var(--accent-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.3);
+        }
+        .btn-outline-custom {
+            color: #94A3B8;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            font-weight: 500;
+        }
+        .btn-outline-custom:hover {
+            background-color: var(--border-color);
+            color: var(--text-light);
+        }
+
+        /* Khu vực ảnh */
+        #coverPreviewContainer {
+            width: 100%;
+            height: 250px;
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(11, 17, 32, 0.5);
+        }
+        #coverPreview {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar-placeholder">Navbar</nav>
 
+<nav class="navbar navbar-expand-lg navbar-custom py-3">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
-                <!-- Thẻ bọc ngoài dạng Card -->
-                <div class="card shadow-sm">
-                    <div class="card-body p-4">
-                        <h2 class="text-center mb-4 text-dark">Thêm Sách Mới</h2>
-                        <form id="addBookForm">
-                            <div class="mb-3">
-                                <label for="bookTitle" class="form-label fw-bold">Tên sách *</label>
-                                <input type="text" class="form-control" id="bookTitle" placeholder="Nhập tên sách...">
-                            </div>
-                            <div class="mb-3">
-                                <label for="bookAuthor" class="form-label fw-bold">Tác giả *</label>
-                                <input type="text" class="form-control" id="bookAuthor" placeholder="Nhập tên tác giả...">
-                            </div>
-                            <div class="mb-3">
-                                <label for="bookCover" class="form-label fw-bold">Link ảnh bìa</label>
-                                <input type="url" class="form-control" id="bookCover" placeholder="https://example.com/image.jpg">
-                            </div>
-                            <div class="mb-3">
-                                <label for="bookCategory" class="form-label fw-bold">Thể loại</label>
-                                <select class="form-select" id="bookCategory">
-                                    <option value="IT">Công nghệ thông tin</option>
-                                    <option value="Science">Khoa học</option>
-                                    <option value="Literature">Văn học</option>
-                                    <option value="SelfHelp">Phát triển bản thân</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="bookStatus" class="form-label fw-bold">Trạng thái</label>
-                                <select class="form-select" id="bookStatus">
-                                    <option value="unread">Chưa đọc</option>
-                                    <option value="reading">Đang đọc</option>
-                                    <option value="read">Đã đọc</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="bookPages" class="form-label fw-bold">Tổng số trang *</label>
-                                <input type="number" class="form-control" id="bookPages" placeholder="Ví dụ: 300" min="1">
-                            </div>
-                            <div class="d-flex justify-content-between mt-4">
-                                <a href="library.html" class="btn btn-danger px-4">Hủy bỏ</a>
-                                <button type="button" class="btn btn-success px-4" onclick="saveBook()">Lưu sách</button>
-                            </div>
-                        </form>
-                    </div>
+        <a class="navbar-brand" href="#">Nexus Library</a>
+    </div>
+</nav>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card card-custom p-4 p-md-5">
+                <div class="text-center mb-5">
+                    <h2 class="text-white">Thêm Sách Mới</h2>
+                    <p style="color: var(--accent-cyan);">Khởi tạo dữ liệu vào hệ thống</p>
                 </div>
+                
+                <form id="addBookForm">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Link ảnh bìa <span class="text-danger">*</span></label>
+                                <input type="url" class="form-control" id="bookCover" placeholder="https://..." required>
+                            </div>
+                            <div class="mb-3">
+                                <div id="coverPreviewContainer">
+                                    <span id="previewText" style="color: #475569;">Preview Image</span>
+                                    <img src="" alt="Cover" id="coverPreview">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label class="form-label">Tên sách <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="bookTitle" required>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-7 mb-3">
+                                    <label class="form-label">Tác giả <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="bookAuthor" required>
+                                </div>
+                                <div class="col-md-5 mb-3">
+                                    <label class="form-label">Số trang <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="bookPages" min="1" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Thể loại</label>
+                                    <select class="form-select" id="bookGenre">
+                                        <option value="IT">Công nghệ phần mềm</option>
+                                        <option value="Science">Khoa học viễn tưởng</option>
+                                        <option value="Design">UI/UX Design</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Trạng thái</label>
+                                    <select class="form-select" id="bookStatus">
+                                        <option value="Unread">Pending (Chưa đọc)</option>
+                                        <option value="Reading">In Progress (Đang đọc)</option>
+                                        <option value="Finished">Completed (Đã xong)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">URL Dữ liệu (PDF/Drive)</label>
+                                <input type="url" class="form-control" id="bookContent" placeholder="Optional link...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr style="border-color: var(--border-color); margin: 2rem 0;">
+
+                    <div class="d-flex justify-content-end gap-3">
+                        <a href="library.html" class="btn btn-outline-custom px-4 py-2 text-decoration-none rounded">Hủy</a>
+                        <button type="submit" class="btn btn-primary-custom">Lưu Sách</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Nhúng JS của Bootstrap (Dành cho hiệu ứng click dropdown nếu có) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function saveBook() {
-            const title = document.getElementById('bookTitle').value.trim();
-            const author = document.getElementById('bookAuthor').value.trim();
-            const pages = document.getElementById('bookPages').value.trim();
-
-            if (!title || !author || !pages) {
-                alert("Vui lòng điền đầy đủ các thông tin bắt buộc: Tên sách, Tác giả và Số trang!");
-                return;
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#bookCover').on('input', function() {
+            let url = $(this).val().trim();
+            if(url) {
+                $('#coverPreview').attr('src', url).show();
+                $('#previewText').hide();
+            } else {
+                $('#coverPreview').hide();
+                $('#previewText').show();
             }
+        });
 
-            alert("Đã lưu sách thành công!");
-            window.location.href = "library.html";
-        }
-    </script>
+        $('#addBookForm').on('submit', function(e) {
+            e.preventDefault();
+            alert("Đã đẩy dữ liệu thành công lên hệ thống!");
+        });
+    });
+</script>
 </body>
 </html>
