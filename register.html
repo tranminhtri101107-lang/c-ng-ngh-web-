@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký — MyLibrary</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body {
+            background: radial-gradient(ellipse at 70% 20%, rgba(245,166,35,0.07) 0%, transparent 55%),
+                        #0d1117;
+        }
+        /* Register card rộng hơn chút */
+        .auth-card { max-width: 500px; }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">📚 MyLibrary</a>
+            <div class="ms-auto d-flex gap-2">
+                <a href="index.html" class="btn btn-link text-white-50 text-decoration-none btn-sm">Trang chủ</a>
+                <a href="login.html" class="btn btn-outline-light btn-sm rounded-pill px-3">Đăng nhập</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main class="flex-grow-1 d-flex align-items-center justify-content-center py-5">
+        <div class="auth-card">
+
+            <!-- Logo -->
+            <div class="text-center mb-4">
+                <div class="fs-2 mb-1">📚</div>
+                <span class="fw-bold" style="font-family:'Playfair Display',serif; color:#f5a623; font-size:1.2rem;">MyLibrary</span>
+            </div>
+
+            <h1 class="fs-4 fw-bold text-center mb-1" style="color:#f0f6fc;">Tạo tài khoản</h1>
+            <p class="text-center mb-4 small" style="color:#8b949e;">Tham gia miễn phí và bắt đầu hành trình tri thức</p>
+
+            <!-- Form -->
+            <form id="registerForm" novalidate>
+                <!-- Họ tên -->
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">Họ và tên</label>
+                    <input type="text" class="form-control" id="fullName"
+                           placeholder="Nguyễn Văn A" autocomplete="name">
+                    <div class="invalid-feedback">Vui lòng nhập họ và tên.</div>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label for="email" class="form-label">Địa chỉ Email</label>
+                    <input type="email" class="form-control" id="email"
+                           placeholder="name@example.com" autocomplete="email">
+                    <div class="invalid-feedback">Vui lòng nhập email hợp lệ.</div>
+                </div>
+
+                <!-- Mật khẩu -->
+                <div class="mb-3">
+                    <label for="password" class="form-label">Mật khẩu</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password"
+                               placeholder="Tạo mật khẩu" autocomplete="new-password">
+                        <button class="btn btn-outline-secondary" type="button" id="togglePw1">👁</button>
+                    </div>
+                    <div class="text-danger small mt-1 d-none" id="passwordError">Mật khẩu phải có ít nhất 6 ký tự.</div>
+                </div>
+
+                <!-- Xác nhận mật khẩu -->
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="confirmPassword"
+                               placeholder="Nhập lại mật khẩu" autocomplete="new-password">
+                        <button class="btn btn-outline-secondary" type="button" id="togglePw2">👁</button>
+                    </div>
+                    <div class="text-danger small mt-1 d-none" id="confirmError">Mật khẩu xác nhận không khớp.</div>
+                </div>
+
+                <button type="submit" class="btn btn-gold w-100 mt-2 py-2">Đăng ký ngay</button>
+            </form>
+
+            <p class="text-center mt-4 small" style="color:#8b949e;">
+                Đã có tài khoản?
+                <a href="login.html" class="fw-bold text-decoration-none" style="color:#f5a623;">Đăng nhập →</a>
+            </p>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-4">
+        <div class="container">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <span class="fw-bold" style="font-family:'Playfair Display',serif; color:#c9d1d9; font-size:1.1rem;">📚 MyLibrary</span>
+                <span style="color:#8b949e; font-size:0.8rem; letter-spacing:0.04em;">Nền tảng quản lý sách cá nhân &nbsp;·&nbsp; VKU</span>
+                <span style="color:#6e7681; font-size:0.8rem;">© 2026 MyLibrary</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle hiện / ẩn mật khẩu
+        function makeToggle(btnId, inputId) {
+            document.getElementById(btnId).addEventListener('click', function () {
+                const input = document.getElementById(inputId);
+                const isHidden = input.type === 'password';
+                input.type = isHidden ? 'text' : 'password';
+                this.textContent = isHidden ? '🙈' : '👁';
+            });
+        }
+        makeToggle('togglePw1', 'password');
+        makeToggle('togglePw2', 'confirmPassword');
+
+        // Xử lý form
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name     = document.getElementById('fullName');
+            const email    = document.getElementById('email');
+            const password = document.getElementById('password');
+            const confirm  = document.getElementById('confirmPassword');
+            let valid = true;
+
+            // Kiểm tra họ tên
+            if (!name.value.trim()) {
+                name.classList.add('is-invalid'); valid = false;
+            } else {
+                name.classList.remove('is-invalid');
+            }
+
+            // Kiểm tra email
+            if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+                email.classList.add('is-invalid'); valid = false;
+            } else {
+                email.classList.remove('is-invalid');
+            }
+
+            // Kiểm tra mật khẩu
+            const pwError = document.getElementById('passwordError');
+            if (!password.value || password.value.length < 6) {
+                pwError.classList.remove('d-none');
+                password.classList.add('is-invalid'); valid = false;
+            } else {
+                pwError.classList.add('d-none');
+                password.classList.remove('is-invalid');
+            }
+
+            // Kiểm tra xác nhận mật khẩu
+            const cfError = document.getElementById('confirmError');
+            if (!confirm.value || confirm.value !== password.value) {
+                cfError.classList.remove('d-none');
+                confirm.classList.add('is-invalid'); valid = false;
+            } else {
+                cfError.classList.add('d-none');
+                confirm.classList.remove('is-invalid');
+            }
+
+            if (valid) {
+                alert('Tạo tài khoản thành công! Vui lòng đăng nhập.');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Xóa lỗi khi người dùng gõ lại
+        ['fullName', 'email', 'password', 'confirmPassword'].forEach(function (id) {
+            document.getElementById(id).addEventListener('input', function () {
+                this.classList.remove('is-invalid');
+                if (id === 'password') document.getElementById('passwordError').classList.add('d-none');
+                if (id === 'confirmPassword') document.getElementById('confirmError').classList.add('d-none');
+            });
+        });
+    </script>
+</body>
+</html>

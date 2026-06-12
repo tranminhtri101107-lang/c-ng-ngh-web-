@@ -1,0 +1,149 @@
+/* ===================================================
+   MyLibrary — Custom overrides (Bootstrap làm phần còn lại)
+   =================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&display=swap');
+
+/* --- Màu nền và font chữ chung --- */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0d1117;
+    color: #e6edf3;
+}
+
+/* --- Navbar --- */
+.navbar {
+    background-color: rgba(13, 17, 23, 0.9) !important;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.navbar-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: #f0f6fc !important;
+}
+
+/* --- Nút vàng (primary của site) --- */
+.btn-gold {
+    background-color: #f5a623;
+    color: #1a0f00;
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
+    padding: 0.5rem 1.5rem;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-gold:hover {
+    background-color: #e8930d;
+    transform: translateY(-1px);
+    color: #1a0f00;
+}
+
+/* --- Hero Section --- */
+.hero-section {
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+    background: radial-gradient(ellipse at 50% 0%, rgba(88, 120, 255, 0.15) 0%, transparent 65%),
+                #0d1117;
+}
+
+.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    line-height: 1.15;
+    color: #f0f6fc;
+}
+
+.hero-title .text-gold {
+    color: #f5a623;
+}
+
+/* --- Feature Cards --- */
+.feature-card {
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 2rem 1.75rem;
+    height: 100%;
+    transition: border-color 0.25s, transform 0.25s;
+}
+
+.feature-card:hover {
+    border-color: rgba(88, 120, 255, 0.4);
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1.25rem;
+}
+
+/* --- Auth Card (Login / Register) --- */
+.auth-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    max-width: 460px;
+    width: 100%;
+}
+
+.auth-card .form-control {
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #e6edf3;
+    border-radius: 10px;
+}
+
+.auth-card .form-control:focus {
+    background-color: rgba(88, 120, 255, 0.08);
+    border-color: #5878ff;
+    color: #f0f6fc;
+    box-shadow: 0 0 0 3px rgba(88, 120, 255, 0.15);
+}
+
+.auth-card .form-control::placeholder {
+    color: rgba(230, 237, 243, 0.35);
+}
+
+.auth-card .form-label {
+    color: #c9d1d9;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+/* --- Modal form inputs --- */
+#registerModal .form-control {
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #e6edf3;
+    border-radius: 10px;
+}
+
+#registerModal .form-control:focus {
+    background-color: rgba(88, 120, 255, 0.08);
+    border-color: #5878ff;
+    color: #f0f6fc;
+    box-shadow: 0 0 0 3px rgba(88, 120, 255, 0.15);
+}
+
+#registerModal .form-control::placeholder {
+    color: rgba(230, 237, 243, 0.35);
+}
+
+/* --- Footer --- */
+footer {
+    background-color: #161b22;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    color: #8b949e;
+    font-size: 0.875rem;
+}

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Sách — MyLibrary</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --card-bg:    #1E293B;
+            --accent-cyan:#06B6D4;
+            --btn-blue:   #3B82F6;
+            --input-bg:   #0B1120;
+            --border-color:#334155;
+        }
+
+        main { padding-top: 90px; padding-bottom: 60px; }
+
+        h1, h2, h3, h4, h5 { font-family: 'Montserrat', sans-serif; }
+
+        /* Content card */
+        .content-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            height: 100%;
+        }
+
+        /* Ảnh bìa */
+        .cover-wrapper {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+        }
+        .book-cover {
+            width: 100%;
+            border-radius: 10px;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .book-cover:hover { transform: scale(1.04); }
+
+        /* Badge status */
+        .badge-status {
+            background-color: rgba(6,182,212,0.15);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(6,182,212,0.3);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            font-size: 0.85rem;
+            display: inline-block;
+            transition: all 0.4s;
+        }
+
+        /* Stat box */
+        .stat-box {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        /* Interaction box */
+        .interaction-box {
+            background-color: rgba(11,17,32,0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 20px;
+        }
+
+        /* Inputs */
+        .form-control {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: #F8FAFC;
+        }
+        .form-control:focus {
+            background-color: var(--input-bg);
+            color: #F8FAFC;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(6,182,212,0.2);
+        }
+        .form-control::placeholder { color: #475569; }
+        .input-group-text {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: #94A3B8;
+        }
+
+        /* Button */
+        .btn-primary-custom {
+            background-color: var(--btn-blue);
+            color: #fff;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-primary-custom:hover {
+            background-color: var(--accent-cyan);
+            box-shadow: 0 5px 15px rgba(6,182,212,0.4);
+            color: #fff;
+        }
+
+        /* Progress bar — gradient cyan */
+        .progress {
+            height: 14px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, var(--btn-blue) 0%, var(--accent-cyan) 100%);
+            box-shadow: 0 0 10px rgba(6,182,212,0.5);
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Star rating — neon cyan */
+        .star-rating { font-size: 2.2rem; cursor: pointer; }
+        .star-rating .star { color: #334155; transition: color 0.2s, text-shadow 0.2s; }
+        .star-rating .star.active,
+        .star-rating .star:hover {
+            color: var(--accent-cyan);
+            text-shadow: 0 0 15px rgba(6,182,212,0.6);
+        }
+
+        /* Divider */
+        hr.divider { border-color: var(--border-color); }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">📚 MyLibrary</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="library.html">Thư Viện Của Tôi</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            👤 Xin chào, <strong>Trần Minh Trí</strong>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" style="background:#161b22; border:1px solid rgba(255,255,255,0.1);">
+                            <li><a class="dropdown-item" href="#" style="color:#c9d1d9;">⚙️ Cài đặt tài khoản</a></li>
+                            <li><hr class="dropdown-divider" style="border-color:rgba(255,255,255,0.1);"></li>
+                            <li><a class="dropdown-item text-danger" href="#" onclick="logout()">🚪 Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+
+            <!-- Nút quay lại -->
+            <a href="library.html" class="text-decoration-none fw-semibold mb-4 d-inline-block"
+               style="color:#94A3B8; transition:color 0.2s;"
+               onmouseover="this.style.color='#06B6D4'" onmouseout="this.style.color='#94A3B8'">
+                &larr; Quay lại Dashboard
+            </a>
+
+            <div class="row g-4 mt-1">
+
+                <!-- Cột trái: Ảnh bìa -->
+                <div class="col-md-4">
+                    <div class="cover-wrapper">
+                        <img src="images/book1.jpg"
+                             alt="Bìa sách" class="book-cover" id="bookCoverImg"
+                             onerror="this.src='images/book2.jpg'">
+                    </div>
+                </div>
+
+                <!-- Cột phải: Chi tiết -->
+                <div class="col-md-8">
+                    <div class="content-card">
+
+                        <!-- Tiêu đề + tác giả -->
+                        <div class="mb-4">
+                            <span class="badge-status mb-3" id="badgeStatus">In Progress</span>
+                            <h1 class="mb-2" style="color:#F8FAFC; font-weight:800; line-height:1.2;" id="displayTitle">
+                                Đắc Nhân Tâm
+                            </h1>
+                            <p style="color:#94A3B8; font-size:1.1rem;">
+                                Tác giả: <span class="text-white fw-bold">Dale Carnegie</span>
+                            </p>
+                        </div>
+
+                        <!-- Stat boxes -->
+                        <div class="row mb-4 g-3">
+                            <div class="col-6 col-sm-4">
+                                <div class="stat-box text-center">
+                                    <small class="d-block" style="color:#94A3B8;">Phân loại</small>
+                                    <span class="fw-bold" style="color:var(--accent-cyan);">Phát triển bản thân</span>
+                                </div>
+                            </div>
+                            <div class="col-6 col-sm-4">
+                                <div class="stat-box text-center">
+                                    <small class="d-block" style="color:#94A3B8;">Tổng số trang</small>
+                                    <span class="fw-bold fs-5 text-white" id="totalPages">800</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="divider">
+
+                        <!-- Tracking tiến độ -->
+                        <div class="interaction-box">
+                            <h5 class="mb-3 text-white">📊 Tracking Tiến Độ</h5>
+
+                            <div class="row align-items-center g-2 mb-3">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Page</span>
+                                        <input type="number" class="form-control" id="currentPage" min="0" placeholder="0">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <button class="btn btn-primary-custom w-100" type="button" id="btnUpdateProgress">
+                                        Sync Data
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Progress bar -->
+                            <div class="progress mb-2">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                     id="readProgress" role="progressbar" style="width: 0%;"></div>
+                            </div>
+                            <small style="color:#94A3B8;">
+                                Đã hoàn thành
+                                <span id="pagesRead" class="fw-bold text-white">0</span>
+                                / <span id="totalPagesText">800</span> trang
+                                (<span id="percentText" style="color:var(--accent-cyan);">0%</span>)
+                            </small>
+                        </div>
+
+                        <!-- Feedback & Review -->
+                        <div class="interaction-box">
+                            <h5 class="mb-3 text-white">⭐ Feedback & Review</h5>
+
+                            <div class="star-rating mb-3" id="starRating">
+                                <span class="star" data-val="1">&#9733;</span>
+                                <span class="star" data-val="2">&#9733;</span>
+                                <span class="star" data-val="3">&#9733;</span>
+                                <span class="star" data-val="4">&#9733;</span>
+                                <span class="star" data-val="5">&#9733;</span>
+                            </div>
+
+                            <div class="mb-3">
+                                <textarea class="form-control" id="reviewText" rows="3"
+                                    placeholder="Ghi chú lại kiến thức cốt lõi..."></textarea>
+                            </div>
+
+                            <button class="btn btn-primary-custom px-4" id="btnSaveReview">
+                                💾 Lưu Review
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-4">
+        <div class="container">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <span class="fw-bold" style="font-family:'Playfair Display',serif; color:#c9d1d9; font-size:1.1rem;">📚 MyLibrary</span>
+                <span style="color:#8b949e; font-size:0.8rem; letter-spacing:0.04em;">Nền tảng quản lý sách cá nhân &nbsp;·&nbsp; VKU</span>
+                <span style="color:#6e7681; font-size:0.8rem;">© 2026 MyLibrary</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Auth guard
+        if (!sessionStorage.getItem('isLoggedIn')) { window.location.href = 'login.html'; }
+        function logout() { sessionStorage.removeItem('isLoggedIn'); window.location.href = 'login.html'; }
+
+        $(document).ready(function () {
+
+            const totalPages = parseInt($('#totalPages').text());
+            $('#totalPagesText').text(totalPages);
+            let currentRating = 0;
+
+            // Cập nhật tiến độ đọc
+            $('#btnUpdateProgress').click(function () {
+                let current = parseInt($('#currentPage').val());
+
+                if (isNaN(current) || current < 0) {
+                    alert("Lỗi: Giá trị trang không hợp lệ!"); return;
+                }
+                if (current > totalPages) {
+                    current = totalPages;
+                    $('#currentPage').val(totalPages);
+                }
+
+                let percent = ((current / totalPages) * 100).toFixed(0);
+
+                $('#readProgress').css('width', percent + '%');
+                $('#pagesRead').text(current);
+                $('#percentText').text(percent + '%');
+
+                // Khi đọc xong 100% → badge chuyển xanh lá "Completed"
+                if (parseInt(percent) === 100) {
+                    $('#readProgress').css('background', '#10B981');
+                    $('#badgeStatus').text('Completed').css({
+                        'color': '#10B981',
+                        'border-color': '#10B981',
+                        'background-color': 'rgba(16, 185, 129, 0.1)'
+                    });
+                } else if (parseInt(percent) > 0) {
+                    $('#badgeStatus').text('In Progress');
+                } else {
+                    $('#badgeStatus').text('Pending');
+                }
+            });
+
+            // Star rating — neon cyan khi hover/click
+            $('.star').on('click', function () {
+                currentRating = $(this).data('val');
+                $('.star').removeClass('active');
+                $(this).prevAll().addBack().addClass('active');
+            });
+
+            // Hover preview
+            $('.star').on('mouseover', function () {
+                let hoverVal = $(this).data('val');
+                $('.star').each(function () {
+                    if ($(this).data('val') <= hoverVal) $(this).addClass('active');
+                    else $(this).removeClass('active');
+                });
+            });
+            $('#starRating').on('mouseleave', function () {
+                $('.star').removeClass('active');
+                $('.star').each(function () {
+                    if ($(this).data('val') <= currentRating) $(this).addClass('active');
+                });
+            });
+
+            // Lưu review — bắt buộc phải chọn sao
+            $('#btnSaveReview').click(function () {
+                if (currentRating === 0) {
+                    alert("Cảnh báo: Bạn chưa chọn số sao đánh giá!"); return;
+                }
+                alert("Lưu review thành công! (" + currentRating + " ★)");
+            });
+
+        });
+    </script>
+</body>
+</html>

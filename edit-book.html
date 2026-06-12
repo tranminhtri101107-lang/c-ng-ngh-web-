@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sửa Thông Tin Sách — MyLibrary</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        main { padding-top: 90px; padding-bottom: 60px; }
+        .edit-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+        }
+        .edit-card .form-control,
+        .edit-card .form-select {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #e6edf3;
+            border-radius: 10px;
+        }
+        .edit-card .form-control::placeholder { color: rgba(230,237,243,0.4); }
+        .edit-card .form-control:focus,
+        .edit-card .form-select:focus {
+            background: rgba(88,120,255,0.08);
+            border-color: #5878ff;
+            color: #f0f6fc;
+            box-shadow: 0 0 0 3px rgba(88,120,255,0.15);
+        }
+        .edit-card .form-label { color: #c9d1d9; font-weight: 600; font-size: 0.875rem; }
+        .edit-card .form-select option { background: #161b22; color: #e6edf3; }
+        .edit-card h2 { color: #f0f6fc; font-family: 'Playfair Display', serif; }
+        /* Badge đánh dấu đang sửa */
+        .edit-badge {
+            background: rgba(245,166,35,0.15);
+            border: 1px solid rgba(245,166,35,0.3);
+            color: #f5a623;
+            border-radius: 20px;
+            padding: 4px 14px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">📚 MyLibrary</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="library.html">Thư Viện Của Tôi</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            👤 Xin chào, <strong>Trần Minh Trí</strong>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" style="background:#161b22; border:1px solid rgba(255,255,255,0.1);">
+                            <li><a class="dropdown-item" href="#" style="color:#c9d1d9;">⚙️ Cài đặt tài khoản</a></li>
+                            <li><hr class="dropdown-divider" style="border-color:rgba(255,255,255,0.1);"></li>
+                            <li><a class="dropdown-item text-danger" href="#" onclick="logout()">🚪 Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+
+                    <!-- Tiêu đề -->
+                    <div class="text-center mb-4">
+                        <span class="edit-badge">✏️ CHẾ ĐỘ CHỈNH SỬA</span>
+                        <h2 class="mt-3 mb-0">Sửa Thông Tin Sách</h2>
+                        <p class="small mt-1" style="color:#8b949e;">Thay đổi thông tin rồi nhấn Lưu để cập nhật</p>
+                    </div>
+
+                    <div class="edit-card p-4 p-md-5">
+                        <form id="editBookForm">
+                            <div class="mb-3">
+                                <label for="bookTitle" class="form-label">Tên sách *</label>
+                                <input type="text" class="form-control" id="bookTitle" placeholder="Nhập tên sách...">
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookAuthor" class="form-label">Tác giả *</label>
+                                <input type="text" class="form-control" id="bookAuthor" placeholder="Nhập tên tác giả...">
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookCover" class="form-label">Link ảnh bìa</label>
+                                <input type="text" class="form-control" id="bookCover" placeholder="https://example.com/image.jpg">
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookCategory" class="form-label">Thể loại</label>
+                                <select class="form-select" id="bookCategory">
+                                    <option value="IT">Công nghệ thông tin</option>
+                                    <option value="Science">Khoa học</option>
+                                    <option value="Literature">Văn học</option>
+                                    <option value="SelfHelp">Phát triển bản thân</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookStatus" class="form-label">Trạng thái</label>
+                                <select class="form-select" id="bookStatus">
+                                    <option value="unread">Chưa đọc</option>
+                                    <option value="reading">Đang đọc</option>
+                                    <option value="read">Đã đọc</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="bookPages" class="form-label">Tổng số trang *</label>
+                                <input type="number" class="form-control" id="bookPages" placeholder="Ví dụ: 300" min="1">
+                            </div>
+                            <div class="d-flex justify-content-between gap-3">
+                                <a href="library.html" class="btn btn-outline-light px-4 flex-fill">Hủy bỏ</a>
+                                <button type="button" class="btn btn-gold px-4 flex-fill" onclick="saveEdit()">💾 Lưu thay đổi</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-4">
+        <div class="container">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <span class="fw-bold" style="font-family:'Playfair Display',serif; color:#c9d1d9; font-size:1.1rem;">📚 MyLibrary</span>
+                <span style="color:#8b949e; font-size:0.8rem; letter-spacing:0.04em;">Nền tảng quản lý sách cá nhân &nbsp;·&nbsp; VKU</span>
+                <span style="color:#6e7681; font-size:0.8rem;">© 2026 MyLibrary</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        if (!sessionStorage.getItem('isLoggedIn')) { window.location.href = 'login.html'; }
+        function logout() { sessionStorage.removeItem('isLoggedIn'); window.location.href = 'login.html'; }
+        // Đọc dữ liệu từ URL params và điền vào form
+        window.addEventListener('DOMContentLoaded', function () {
+            const params = new URLSearchParams(window.location.search);
+
+            const title    = params.get('title')    || '';
+            const author   = params.get('author')   || '';
+            const cover    = params.get('cover')    || '';
+            const category = params.get('category') || 'IT';
+            const status   = params.get('status')   || 'unread';
+            const pages    = params.get('pages')    || '';
+
+            document.getElementById('bookTitle').value  = title;
+            document.getElementById('bookAuthor').value = author;
+            document.getElementById('bookCover').value  = cover;
+            document.getElementById('bookPages').value  = pages;
+
+            // Chọn đúng option cho Thể loại
+            const catSelect = document.getElementById('bookCategory');
+            for (let i = 0; i < catSelect.options.length; i++) {
+                if (catSelect.options[i].value === category) {
+                    catSelect.selectedIndex = i;
+                    break;
+                }
+            }
+
+            // Chọn đúng option cho Trạng thái
+            const statusSelect = document.getElementById('bookStatus');
+            for (let i = 0; i < statusSelect.options.length; i++) {
+                if (statusSelect.options[i].value === status) {
+                    statusSelect.selectedIndex = i;
+                    break;
+                }
+            }
+        });
+
+        // Lưu thay đổi
+        function saveEdit() {
+            const title  = document.getElementById('bookTitle').value.trim();
+            const author = document.getElementById('bookAuthor').value.trim();
+            const pages  = document.getElementById('bookPages').value.trim();
+
+            if (!title || !author || !pages) {
+                alert("Vui lòng điền đầy đủ các thông tin bắt buộc: Tên sách, Tác giả và Số trang!");
+                return;
+            }
+
+            alert("Cập nhật sách thành công!");
+            window.location.href = "library.html";
+        }
+    </script>
+</body>
+</html>

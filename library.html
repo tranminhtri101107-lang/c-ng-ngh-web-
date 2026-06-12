@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thư Viện Sách — MyLibrary</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* ── Book Grid ── */
+        .book-card {
+            background-color: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            height: 100%;
+        }
+        .book-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(88,120,255,0.4);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+        }
+        .book-cover {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+        }
+        .book-info { padding: 14px; }
+        .book-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin: 0 0 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .book-author { font-size: 13px; color: #8b949e; margin-bottom: 14px; }
+
+        /* ── Toolbar ── */
+        .toolbar-section {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 28px;
+        }
+        .toolbar-section .form-control {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #e6edf3;
+            border-radius: 10px;
+        }
+        .toolbar-section .form-control::placeholder { color: rgba(230,237,243,0.4); }
+        .toolbar-section .form-control:focus {
+            background: rgba(88,120,255,0.08);
+            border-color: #5878ff;
+            color: #f0f6fc;
+            box-shadow: 0 0 0 3px rgba(88,120,255,0.15);
+        }
+        .nav-pills .nav-link { color: #8b949e; border-radius: 20px; }
+        .nav-pills .nav-link.active { background-color: #f5a623; color: #1a0f00; font-weight: 700; }
+        .nav-pills .nav-link:hover:not(.active) { background: rgba(255,255,255,0.08); color: #f0f6fc; }
+
+        /* ── Page layout ── */
+        main { padding-top: 90px; padding-bottom: 60px; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR (Bootstrap 5) -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">📚 MyLibrary</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="library.html">Thư Viện Của Tôi</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            👤 Xin chào, <strong>Trần Minh Trí</strong>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" style="background:#161b22; border:1px solid rgba(255,255,255,0.1);">
+                            <li><a class="dropdown-item" href="#" style="color:#c9d1d9;">⚙️ Cài đặt tài khoản</a></li>
+                            <li><hr class="dropdown-divider" style="border-color:rgba(255,255,255,0.1);"></li>
+                            <li><a class="dropdown-item text-danger" href="#" onclick="logout()">🚪 Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+
+            <!-- TOOLBAR -->
+            <div class="toolbar-section">
+                <div class="row align-items-center g-3">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#8b949e;">🔍</span>
+                            <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm tên sách...">
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <ul class="nav nav-pills" id="filterTabs">
+                            <li class="nav-item"><a class="nav-link active" href="#" data-filter="all">Tất cả</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#" data-filter="reading">Đang đọc</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#" data-filter="read">Đã đọc</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 text-md-end">
+                        <a href="add-book.html" class="btn btn-gold w-100">
+                            ＋ Thêm sách
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOOK GRID -->
+            <div class="row g-4" id="bookGrid">
+
+                <div class="col-md-3 col-sm-6 book-item" data-title="Code Dạo Ký Sự" data-status="reading">
+                    <div class="book-card">
+                        <img src="images/book1.jpg" alt="Code Dạo Ký Sự" class="book-cover">
+                        <div class="book-info">
+                            <h4 class="book-title" title="Code Dạo Ký Sự">Code Dạo Ký Sự</h4>
+                            <p class="book-author">Phạm Huy Hoàng</p>
+                            <div class="d-flex gap-1 mt-1">
+                                <a href="book-detail.html" class="btn btn-primary btn-sm flex-fill">Chi tiết</a>
+                                <a href="edit-book.html?title=Code+D%E1%BA%A1o+K%C3%BD+S%E1%BB%B1&author=Ph%E1%BA%A1m+Huy+Ho%C3%A0ng&status=reading&cover=images/book1.jpg&pages=300&category=IT" class="btn btn-warning btn-sm flex-fill" style="color:#1a0f00;">Sửa</a>
+                                <a href="#" class="btn btn-danger btn-sm flex-fill btn-delete">Xóa</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6 book-item" data-title="Clean Code" data-status="read">
+                    <div class="book-card">
+                        <img src="images/book2.jpg" alt="Clean Code" class="book-cover">
+                        <div class="book-info">
+                            <h4 class="book-title" title="Clean Code">Clean Code</h4>
+                            <p class="book-author">Robert C. Martin</p>
+                            <div class="d-flex gap-1 mt-1">
+                                <a href="book-detail.html" class="btn btn-primary btn-sm flex-fill">Chi tiết</a>
+                                <a href="edit-book.html?title=Clean+Code&author=Robert+C.+Martin&status=read&cover=images/book2.jpg&pages=431&category=IT" class="btn btn-warning btn-sm flex-fill" style="color:#1a0f00;">Sửa</a>
+                                <a href="#" class="btn btn-danger btn-sm flex-fill btn-delete">Xóa</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6 book-item" data-title="Lập Trình C++ Cơ Bản" data-status="reading">
+                    <div class="book-card">
+                        <img src="images/book3.jpg" alt="Lập Trình C++ Cơ Bản" class="book-cover">
+                        <div class="book-info">
+                            <h4 class="book-title" title="Lập Trình C++ Cơ Bản">Lập Trình C++ Cơ Bản</h4>
+                            <p class="book-author">Nhiều tác giả</p>
+                            <div class="d-flex gap-1 mt-1">
+                                <a href="book-detail.html" class="btn btn-primary btn-sm flex-fill">Chi tiết</a>
+                                <a href="edit-book.html?title=L%E1%BA%ADp+Tr%C3%ACnh+C%2B%2B+C%C6%A1+B%E1%BA%A3n&author=Nhi%E1%BB%81u+t%C3%A1c+gi%E1%BA%A3&status=reading&cover=images/book3.jpg&pages=450&category=IT" class="btn btn-warning btn-sm flex-fill" style="color:#1a0f00;">Sửa</a>
+                                <a href="#" class="btn btn-danger btn-sm flex-fill btn-delete">Xóa</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6 book-item" data-title="Java Core" data-status="read">
+                    <div class="book-card">
+                        <img src="images/book4.jpg" alt="Java Core" class="book-cover">
+                        <div class="book-info">
+                            <h4 class="book-title" title="Java Core">Java Core</h4>
+                            <p class="book-author">Cay S. Horstmann</p>
+                            <div class="d-flex gap-1 mt-1">
+                                <a href="book-detail.html" class="btn btn-primary btn-sm flex-fill">Chi tiết</a>
+                                <a href="edit-book.html?title=Java+Core&author=Cay+S.+Horstmann&status=read&cover=images/book4.jpg&pages=1000&category=IT" class="btn btn-warning btn-sm flex-fill" style="color:#1a0f00;">Sửa</a>
+                                <a href="#" class="btn btn-danger btn-sm flex-fill btn-delete">Xóa</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-4">
+        <div class="container">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <span class="fw-bold" style="font-family:'Playfair Display',serif; color:#c9d1d9; font-size:1.1rem;">📚 MyLibrary</span>
+                <span style="color:#8b949e; font-size:0.8rem; letter-spacing:0.04em;">Nền tảng quản lý sách cá nhân &nbsp;·&nbsp; VKU</span>
+                <span style="color:#6e7681; font-size:0.8rem;">© 2026 MyLibrary</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Bảo vệ trang: chưa đăng nhập thì quảy về login
+        if (!sessionStorage.getItem('isLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+
+        // Hàm đăng xuất
+        function logout() {
+            sessionStorage.removeItem('isLoggedIn');
+            window.location.href = 'login.html';
+        }
+        $(document).ready(function() {
+            
+            // 1. Chức năng Tìm kiếm theo tên sách
+            $('#searchInput').on('keyup', function() {
+                var searchText = $(this).val().toLowerCase();
+                
+                $('.book-item').each(function() {
+                    // Lấy tên sách từ thuộc tính data-title đã gài sẵn trong HTML
+                    var title = $(this).attr('data-title').toLowerCase();
+                    if(title.indexOf(searchText) !== -1) {
+                        $(this).show(); // Hiển thị nếu tên sách khớp chuỗi tìm kiếm
+                    } else {
+                        $(this).hide(); // Ẩn đi nếu không khớp
+                    }
+                });
+            });
+
+            // 2. Chức năng Lọc Tab (Tất cả, Đang đọc, Đã đọc)
+            $('#filterTabs a').on('click', function(e) {
+                e.preventDefault(); // Ngăn hành vi nhảy trang của thẻ a
+                
+                // Đổi trạng thái active cho Tab
+                $('#filterTabs .nav-link').removeClass('active');
+                $(this).addClass('active');
+
+                var filterValue = $(this).attr('data-filter');
+
+                // Xử lý ẩn/hiện dựa trên data-status
+                if(filterValue === 'all') {
+                    $('.book-item').show(); // Bấm "Tất cả" thì hiện toàn bộ
+                } else {
+                    $('.book-item').each(function() {
+                        if($(this).attr('data-status') === filterValue) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+                }
+                
+                // Xóa nội dung thanh tìm kiếm khi chuyển tab để tránh xung đột logic
+                $('#searchInput').val('');
+            });
+
+            // 3. Chức năng Xóa thẻ sách (Tạo hiệu ứng xóa trực tiếp trên giao diện)
+            $('.btn-delete').on('click', function(e) {
+                e.preventDefault();
+                var confirmDelete = confirm("Bạn có chắc chắn muốn xóa cuốn sách này khỏi thư viện?");
+                if(confirmDelete) {
+                    // Hiệu ứng mờ dần (fadeOut) rồi xóa hẳn (remove) khối col-md-3 bọc ngoài
+                    $(this).closest('.book-item').fadeOut(300, function() {
+                        $(this).remove();
+                    });
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

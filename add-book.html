@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Sách Mới — MyLibrary</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --card-bg: #1E293B;
+            --accent-cyan: #06B6D4;
+            --btn-blue: #3B82F6;
+            --input-bg: #0B1120;
+            --border-color: #334155;
+        }
+
+        main { padding-top: 90px; padding-bottom: 60px; }
+
+        h2 { font-family: 'Montserrat', sans-serif; font-weight: 700; }
+
+        /* Card form */
+        .add-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+
+        /* Form inputs */
+        .add-card .form-label {
+            font-weight: 500;
+            color: #94A3B8;
+            margin-bottom: 8px;
+        }
+        .add-card .form-control,
+        .add-card .form-select {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: #F8FAFC;
+            border-radius: 8px;
+            padding: 12px 16px;
+            transition: all 0.3s;
+        }
+        .add-card .form-control::placeholder { color: #475569; }
+        .add-card .form-control:focus,
+        .add-card .form-select:focus {
+            background-color: var(--input-bg);
+            color: #F8FAFC;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(6,182,212,0.2);
+        }
+        .add-card .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2394A3B8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        }
+        .add-card .form-select option { background: #161b22; color: #e6edf3; }
+
+        /* Buttons */
+        .btn-save {
+            background-color: var(--btn-blue);
+            color: #fff;
+            border: none;
+            font-weight: 600;
+            padding: 12px 28px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-save:hover {
+            background-color: var(--accent-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(6,182,212,0.3);
+            color: #fff;
+        }
+        .btn-cancel {
+            color: #94A3B8;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            font-weight: 500;
+            padding: 12px 28px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn-cancel:hover {
+            background-color: var(--border-color);
+            color: #F8FAFC;
+        }
+
+        /* Cover preview */
+        #coverPreviewContainer {
+            width: 100%;
+            height: 260px;
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(11,17,32,0.5);
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+        #coverPreviewContainer:has(img[style*="block"]) { border-color: var(--accent-cyan); }
+        #coverPreview {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        #previewText { color: #475569; font-size: 0.85rem; }
+
+        hr.divider { border-color: var(--border-color); margin: 2rem 0; }
+
+        /* Badge */
+        .edit-badge {
+            background: rgba(6,182,212,0.12);
+            border: 1px solid rgba(6,182,212,0.3);
+            color: var(--accent-cyan);
+            border-radius: 20px;
+            padding: 4px 14px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">📚 MyLibrary</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="library.html">Thư Viện Của Tôi</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            👤 Xin chào, <strong>Trần Minh Trí</strong>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" style="background:#161b22; border:1px solid rgba(255,255,255,0.1);">
+                            <li><a class="dropdown-item" href="#" style="color:#c9d1d9;">⚙️ Cài đặt tài khoản</a></li>
+                            <li><hr class="dropdown-divider" style="border-color:rgba(255,255,255,0.1);"></li>
+                            <li><a class="dropdown-item text-danger" href="#" onclick="logout()">🚪 Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+
+                    <!-- Tiêu đề -->
+                    <div class="text-center mb-4">
+                        <span class="edit-badge">➕ THÊM SÁCH MỚI</span>
+                        <h2 class="text-white mt-3 mb-1">Thêm Sách Mới</h2>
+                        <p style="color: var(--accent-cyan); font-size:0.9rem;">Khởi tạo dữ liệu vào hệ thống</p>
+                    </div>
+
+                    <div class="add-card p-4 p-md-5">
+                        <form id="addBookForm">
+                            <div class="row g-4">
+
+                                <!-- Cột trái: Preview ảnh bìa -->
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Link ảnh bìa <span class="text-danger">*</span></label>
+                                        <input type="url" class="form-control" id="bookCover" placeholder="https://...">
+                                    </div>
+                                    <div class="mb-3">
+                                        <div id="coverPreviewContainer">
+                                            <span id="previewText">🖼️ Preview ảnh bìa</span>
+                                            <img src="" alt="Cover Preview" id="coverPreview">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Cột phải: Thông tin sách -->
+                                <div class="col-md-8">
+                                    <div class="mb-3">
+                                        <label class="form-label">Tên sách <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="bookTitle" placeholder="Nhập tên sách...">
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-7 mb-3">
+                                            <label class="form-label">Tác giả <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="bookAuthor" placeholder="Nhập tên tác giả...">
+                                        </div>
+                                        <div class="col-md-5 mb-3">
+                                            <label class="form-label">Số trang <span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" id="bookPages" placeholder="VD: 300" min="1">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Thể loại</label>
+                                            <select class="form-select" id="bookCategory">
+                                                <option value="IT">Công nghệ thông tin</option>
+                                                <option value="Science">Khoa học</option>
+                                                <option value="Literature">Văn học</option>
+                                                <option value="SelfHelp">Phát triển bản thân</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Trạng thái</label>
+                                            <select class="form-select" id="bookStatus">
+                                                <option value="unread">Pending (Chưa đọc)</option>
+                                                <option value="reading">In Progress (Đang đọc)</option>
+                                                <option value="read">Completed (Đã đọc)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">URL Tài liệu <span style="color:#475569;">(PDF / Drive — tùy chọn)</span></label>
+                                        <input type="url" class="form-control" id="bookContent" placeholder="https://drive.google.com/...">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="divider">
+
+                            <div class="d-flex justify-content-end gap-3">
+                                <a href="library.html" class="btn-cancel">Hủy bỏ</a>
+                                <button type="submit" class="btn btn-save">💾 Lưu Sách</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-4">
+        <div class="container">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <span class="fw-bold" style="font-family:'Playfair Display',serif; color:#c9d1d9; font-size:1.1rem;">📚 MyLibrary</span>
+                <span style="color:#8b949e; font-size:0.8rem; letter-spacing:0.04em;">Nền tảng quản lý sách cá nhân &nbsp;·&nbsp; VKU</span>
+                <span style="color:#6e7681; font-size:0.8rem;">© 2026 MyLibrary</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Auth guard
+        if (!sessionStorage.getItem('isLoggedIn')) { window.location.href = 'login.html'; }
+        function logout() { sessionStorage.removeItem('isLoggedIn'); window.location.href = 'login.html'; }
+
+        $(document).ready(function () {
+
+            // Live preview ảnh bìa khi nhập URL
+            $('#bookCover').on('input', function () {
+                let url = $(this).val().trim();
+                if (url) {
+                    $('#coverPreview').attr('src', url).show();
+                    $('#previewText').hide();
+                } else {
+                    $('#coverPreview').hide();
+                    $('#previewText').show();
+                }
+            });
+
+            // Xử lý submit form
+            $('#addBookForm').on('submit', function (e) {
+                e.preventDefault();
+
+                const title  = $('#bookTitle').val().trim();
+                const author = $('#bookAuthor').val().trim();
+                const pages  = $('#bookPages').val().trim();
+                const cover  = $('#bookCover').val().trim();
+
+                if (!title || !author || !pages || !cover) {
+                    alert("Vui lòng điền đầy đủ các thông tin bắt buộc: Tên sách, Tác giả, Số trang và Link ảnh bìa!");
+                    return;
+                }
+
+                alert("Đã lưu sách thành công!");
+                window.location.href = "library.html";
+            });
+
+        });
+    </script>
+</body>
+</html>
