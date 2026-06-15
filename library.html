@@ -122,6 +122,7 @@
                         <p class="book-author">Phạm Huy Hoàng</p>
                         <div class="btn-group btn-group-justified" role="group">
                             <a href="book-detail.html" class="btn btn-primary btn-sm">Chi tiết</a>
+                            <a href="#" class="btn btn-warning btn-sm btn-edit">Sửa</a>
                             <a href="#" class="btn btn-danger btn-sm btn-delete">Xóa</a>
                         </div>
                     </div>
@@ -136,6 +137,7 @@
                         <p class="book-author">Robert C. Martin</p>
                         <div class="btn-group btn-group-justified" role="group">
                             <a href="book-detail.html" class="btn btn-primary btn-sm">Chi tiết</a>
+                            <a href="#" class="btn btn-warning btn-sm btn-edit">Sửa</a>
                             <a href="#" class="btn btn-danger btn-sm btn-delete">Xóa</a>
                         </div>
                     </div>
@@ -150,6 +152,7 @@
                         <p class="book-author">Nhiều tác giả</p>
                         <div class="btn-group btn-group-justified" role="group">
                             <a href="book-detail.html" class="btn btn-primary btn-sm">Chi tiết</a>
+                            <a href="#" class="btn btn-warning btn-sm btn-edit">Sửa</a>
                             <a href="#" class="btn btn-danger btn-sm btn-delete">Xóa</a>
                         </div>
                     </div>
@@ -164,13 +167,51 @@
                         <p class="book-author">Cay S. Horstmann</p>
                         <div class="btn-group btn-group-justified" role="group">
                             <a href="book-detail.html" class="btn btn-primary btn-sm">Chi tiết</a>
+                            <a href="#" class="btn btn-warning btn-sm btn-edit">Sửa</a>
                             <a href="#" class="btn btn-danger btn-sm btn-delete">Xóa</a>
                         </div>
                     </div>
                 </div>
             </div>
 
-        </div> </div> <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        </div> 
+    </div> 
+
+    <div class="modal fade" id="editBookModal" tabindex="-1" role="dialog" aria-labelledby="editBookModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="editBookModalLabel">Sửa Thông Tin Sách</h4>
+          </div>
+          <div class="modal-body">
+            <form id="editBookForm">
+              <div class="form-group">
+                <label for="editTitle">Tên sách:</label>
+                <input type="text" class="form-control" id="editTitle" required>
+              </div>
+              <div class="form-group">
+                <label for="editAuthor">Tác giả:</label>
+                <input type="text" class="form-control" id="editAuthor" required>
+              </div>
+              <div class="form-group">
+                <label for="editStatus">Trạng thái đọc:</label>
+                <select class="form-control" id="editStatus">
+                  <option value="reading">Đang đọc</option>
+                  <option value="read">Đã đọc</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+            <button type="button" class="btn btn-primary" id="saveEditBtn">Lưu thay đổi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <script>
@@ -218,6 +259,46 @@
                         $(this).remove();
                     });
                 }
+            });
+
+            // Biến toàn cục để lưu lại thẻ sách nào đang được bấm sửa
+            var currentEditCard = null;
+
+            // Chức năng Sửa - Mở Modal
+            $('.btn-edit').on('click', function(e) {
+                e.preventDefault();
+                
+                currentEditCard = $(this).closest('.book-item');
+                
+                var title = currentEditCard.find('.book-title').text();
+                var author = currentEditCard.find('.book-author').text();
+                var status = currentEditCard.attr('data-status');
+                
+                $('#editTitle').val(title);
+                $('#editAuthor').val(author);
+                $('#editStatus').val(status);
+                
+                $('#editBookModal').modal('show');
+            });
+
+            // Chức năng Sửa - Lưu thay đổi
+            $('#saveEditBtn').on('click', function() {
+                var newTitle = $('#editTitle').val().trim();
+                var newAuthor = $('#editAuthor').val().trim();
+                var newStatus = $('#editStatus').val();
+                
+                if(newTitle === "" || newAuthor === "") {
+                    alert("Vui lòng không để trống tên sách và tác giả!");
+                    return;
+                }
+                
+                // Cập nhật giao diện thẻ sách
+                currentEditCard.find('.book-title').text(newTitle).attr('title', newTitle);
+                currentEditCard.find('.book-author').text(newAuthor);
+                currentEditCard.attr('data-status', newStatus);
+                currentEditCard.attr('data-title', newTitle);
+                
+                $('#editBookModal').modal('hide');
             });
         });
     </script>
